@@ -3,8 +3,8 @@
 #define GRAPE_FUNDAMENT_H
 #include <stdio.h>
 
-void interpretator(char *str);
 char *input();
 void fill(FILE *in, char *str, int *len);
+void normalaize(char **argm);
 
 #endif //GRAPE_FUNDAMENT_H
