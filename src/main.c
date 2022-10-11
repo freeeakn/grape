@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../lib/general.h"
+#include "../lib/lexer.h"
 
 int main(int argc, char **argv) {
     switch (argc) {
@@ -20,7 +21,7 @@ int main(int argc, char **argv) {
                 int len = 0;
                 fill(in, str, &len);
                 printf("%s", str);
-                //? LEXER ?//
+                lexer(str);
             }
             fclose(in);
             free(str);

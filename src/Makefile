@@ -4,7 +4,7 @@ CC=gcc
 # LDFLAGS=-L/opt/homebrew/opt/flex/lib
 
 all: main.o general.o
-	$(CC) -o gr $(СFLAGS) main.o general.o
+	$(CC) -o gr $(СFLAGS) main.o general.o node_list.o lexer.o
 	rm *.o
 
 main.o:
@@ -13,6 +13,12 @@ main.o:
 general.o:
 	$(CC) -c $(СFLAGS) ../lib/general.c
 
+node_list.o:
+	$(CC) -c $(СFLAGS) ../lib/node_list.c
+
+lexer.o:
+	$(CC) -c $(СFLAGS) ../lib/lexer.c
+
 clean:
-	rm grape
+	rm gr
 	rm *.o
