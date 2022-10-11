@@ -7,7 +7,7 @@ struct node {
     node *next;
 };
 
-node *init(char type, char data) {
+node *init(char *type, char *data) {
     node *temp = (node*)malloc(sizeof(node));
     temp -> id = type;
     temp -> cap = data;
@@ -15,7 +15,7 @@ node *init(char type, char data) {
     return(temp);
 }
 
-node *attach(char type, char data, node *head) {
+node *attach(char *type, char *data, node *head) {
     node *temp = (node*)malloc(sizeof(node));
     temp -> id = type;
     temp -> cap = data;
@@ -23,17 +23,17 @@ node *attach(char type, char data, node *head) {
     return(temp);
 }
 
-void *push(char type, char data, node *head) {
+void push(char *type, char *data, node *head) {
     node *temp = (node*)malloc(sizeof(node));
     temp -> id = type;
     temp -> cap = data;
     temp -> next = NULL;
     node *past = head;
-    while (past -> next != NULL) past = past -> next;
+    while (past -> next != NULL) {past = past -> next;}
     past -> next = temp;
 }
 
-node *push_n(char type, char data, int n, node *head) {
+node *push_n(char *type, char *data, int n, node *head) {
     node *past = head;
     int count = 1;
     while (count < n - 1 && past -> next != NULL) {
@@ -57,8 +57,8 @@ node *clear(node *head) {
     return NULL;
 }
 
-node *pop(char data, node head) {
-    void capacity = head;
+node *pop(char *data, node *head) {
+    void *capacity = head;
     node *temp = head, *past = NULL;
     if (head == NULL) capacity = NULL;
     while (temp && temp -> cap != data) {
