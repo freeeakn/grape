@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../lib/general.h"
-// #include "../lib/lexer.h"
+#include "../lib/node_list.h"
+#include "../lib/lexer.h"
 
 int main(int argc, char **argv) {
     switch (argc) {
@@ -15,13 +16,17 @@ int main(int argc, char **argv) {
             char *str = (char*)malloc(sizeof(char));
             // fill dynamic string by input file
             if (in == NULL) {
-                perror("GRAPE ERROR 1: Nothing to do, try to create \'space.gr\'\n");
+                perror("GRAPE ERROR 1: Nothing to do, try to create init func\n");
                 exit(1);
             } else {
                 int len = 0;
                 fill(in, str, &len);
                 printf("%s", str);
-                // lexer(str);
+                node *tmp = lexer(str);
+                while (tmp != NULL) {
+                    printf("%s\n", tmp -> cap);
+                    tmp = tmp -> next;
+                }
             }
             fclose(in);
             free(str);

@@ -1,1 +1,1 @@
--p hello
+init (print(hello world))

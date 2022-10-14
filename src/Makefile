@@ -20,5 +20,5 @@ node_list.o:
 # 	$(CC) -c $(СFLAGS) ../lib/lexer.c
 
 clean:
-	rm gr
 	rm *.o
+	rm gr

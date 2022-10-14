@@ -3,7 +3,7 @@
 
 struct node {
     char *id;
-    void *cap;
+    char *cap;
     node *next;
 };
 

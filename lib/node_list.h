@@ -1,7 +1,7 @@
 #ifndef GRAPE_NODE_LIST_H
 #define GRAPE_NODE_LIST_H
 
-typedef struct node node;
+typedef struct Node node;
 node *init(char *type, char *data);
 node *attach(char *type, char *data, node *head);
 void push(char *type, char *data, node *head);
