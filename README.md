@@ -1,4 +1,30 @@
-# Conception
+# Grape Programming Language Concept
+
+Grape is a programming language focused on creating atomic programs, each representing an independent module performing a specific computation and returning a result. Interaction between these modules and external systems is managed through a context mechanism.
+
+## Core Principles
+
+- Atomicity: Each file is a separate program performing a single, specific task. This promotes modularity, code reuse, and parallelism.
+
+- Functionality: Grape aims for a functional programming paradigm, where functions are the primary building blocks. State changes are managed through data passing rather than side effects.
+
+- Context: The central concept is the context – a dictionary containing data accessible to the program. The context is passed to the program on startup and modified by the program to pass results or interact with the outside world. External programs and systems can provide data to the context, and Grape's atomic programs can access it.
+
+- Explicit Data Management: Interaction between atomic programs occurs exclusively through the context. There's no direct access to the memory or resources of other programs.
+
+- Typing: Grape will utilize static typing to improve performance and enable error detection at compile time.
+
+- Minimalism: Grape's syntax will strive for minimalism and simplicity, avoiding redundancy.
+
+## Program Structure
+
+An atomic program in Grape will consist of the following parts:
+
+- Header: Defines the program's name, input and output parameters, and data types.
+
+- Body: Contains the program's code, which performs the computations.
+
+- Return Value: The program returns the result of its computations by modifying the context.
 
 ## Data types
 
@@ -13,90 +39,127 @@
 - void
 - null: null
 - type: type
-- any: any of types
 
 ### Composite data type
 
-- cxt: type context
+- ctx: type context
 - arr: type array(type)
 - obj: type object
 - fun: type function
 
 ## Declaring variables
 
-### Autotyping
-
-const variable
-
-- Example
-```gr
-const number: 101 // number type of const int
-const amount: 1.5 // amount type of const dec
-const greeting: 'hello' // greeting type of const str
-const toggle: true // toggle type of const bool
-const years: 1995..2000 // years type of const ivl<int> (1995, 1996, 1997, 1998, 1999, 2000)
-const array: [1, 2, 3] // array type of const arr<int> [1, 2, 3]
-const human: {
-    name: 'ivan',
-    gender: 'male',
-    age: 23
-  } // human type of const obj<name:string, gender:str, age:int>
-const increment: (number) => {
-    return number++
-} // increment type of fn<any, any>
-```
-
-dynamic variable
-
-- Example
-
-```gr
-var number: 101 // number typeof int
-var amount: 1.5 // amount typeof dec
-var greeting: 'hello' // greeting typeof str
-var toggle: false // toggle type of bool
-var years: 1995..2000 // years type of ivl<int> (1995, 1996, 1997, 1998, 1999, 2000)
-var array: [1, 2, 3] // array type of const arr<int> [1, 2, 3]
-var human: {
-    name: 'ivan',
-    gender: 'male',
-    age: 23
-} // human typeof obj<name:string, gender:str, age:int>
-var increment: (number) => {
-    return number++
-} // increment type of fn<any, any> but it is stupid
-```
 ### Strong typing
 
-dynamic variable
+constant variables
 
 - Example
+
 ```gr
-int number: 101 // number typeof int
-dec amount: 1.5 // amount typeof dec
-str greeting: 'hello' // greeting typeof string
-bool toggle: false // toggle type of bool
-ivl<int> years: 1995..2000 // years type of ivl<int> (1995, 1996, 1997, 1998, 1999, 2000)
-arr<int> array: [1, 2, 3] // array type of const arr<int> [1, 2, 3]
-type HumanType: {
+const<int> number = 101 // number typeof int
+const<dec> amount = 1.5 // amount typeof dec
+const<str> greeting = 'hello' // greeting typeof string
+const<bool> toggle = false // toggle type of bool
+type HumanType = {
       name: str,
       gender: str,
       age: int
 } // HumanType
-obj<HumanType> human: {
+obj<HumanType> human = {
     name: 'ivan',
     gender: 'male',
     age: 23
 } // human typeof obj<HumanType>
-fn<int, int> increment: (number) => {
+fun<int, int> increment = (number) => {
     return number++
 } // increment type of fn<int, int>
 ```
-## Example code with entry point
+
+dynamic variable
+
+- Example
 
 ```gr
-space {
-    сonst Greeting: 'hello'
-    space.put: Greeting
+let<int> number = 101 // number typeof int
+let<dec> amount = 1.5 // amount typeof dec
+let<str> greeting = 'hello' // greeting typeof string
+let<bool> toggle = false // toggle type of bool
+ivl<int> years = 1995..2000 // years type of ivl<int> (1995, 1996, 1997, 1998, 1999, 2000)
+arr<int> array = [1, 2, 3] // array type of const arr<int> [1, 2, 3]
+```
+
+## Example code with entry point
+
+- Greeting
+
+```gr
+# file: space.gr
+
+ctx branch { put: str, in: void }
+
+space (branch) {
+    сonst<str> Greeting = 'hello, world\n'
+    branch.put = Greeting
 }
+```
+
+- Math
+
+```gr
+# file: space.gr
+
+ctx branch {
+    put: int,
+    in: int,
+    cfg: {
+        threshold: int
+    }
+}
+
+space (branch) {
+    сonst<int> value = branch.in
+    if (value > branch.cfg.threshold) {
+        branch.put = value * 2;
+    } else {
+        branch.put = value + 1;
+    }
+}
+```
+
+- Atomic conception
+
+```gr
+# file: add.gr
+ctx addCtx {
+    put: int,
+    in: (
+        a: int,
+        b: int
+    )
+}
+
+fun add (addCtx) {
+    const<int> a, b = addCtx.in
+    addCtx.put = a + b;
+}
+```
+
+```gr
+#file: space.gr
+ctx branch {
+    put: int,
+    in: int,
+}
+
+space (branch) {
+    cosnt<int> result = call("./add.gr", {
+        put: branch.put,
+        in: (
+            10,
+            5
+        )
+    });
+    branch.put = result;
+}
+
 ```
