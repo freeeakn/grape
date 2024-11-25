@@ -163,3 +163,62 @@ space (branch) {
 }
 
 ```
+
+
+## Arsagyr's proposal
+
+I think we should replace "put" with "out" and "=" with brackets "()".
+
+- Greeting
+
+```gr
+# file: space.gr
+
+ctx branch { out: str, in: void }
+
+space (branch) {
+    сonst<str> Greeting = 'hello, world\n'
+    branch.out(Greeting)
+}
+```
+
+
+- Atomic conception
+
+```gr
+# file: berry.gr
+ctx berry {
+    out: int,
+    in: (
+        a: int,
+        b: int
+    )
+}
+
+fun add (berry) {
+      const<int> a = berry.in.a
+      const<int> b = berry.in.b
+      berry.out = a + b;
+}
+```
+
+```gr
+#file: branch.gr
+ctx branch {
+    out: int,
+    in: int,
+}
+
+space (branch) {
+    cosnt<int> result = call("./add.gr", {
+        out: branch.out,
+        in: (
+            10,
+            5
+        )
+    });
+    branch.out = result;
+}
+
+```
+
